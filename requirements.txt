@@ -1,4 +1,8 @@
 pandas
+yfinance
 requests
-pytz
+pandas_ta
+numpy
 groq
+feedparser
+pytz
