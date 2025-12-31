@@ -1,13 +1,9 @@
 from alerts.telegram import send_alert
 import os
 
-# Switch between MANUAL / AUTO execution
 MODE = os.getenv("TRADE_MODE", "MANUAL")
 
 def route_trade(trade_decision, confidence):
-    """
-    Executes trade signal: sends Telegram alert, calculates Entry/SL/TP
-    """
     if not trade_decision:
         print("No trade decision received.")
         return
