@@ -18,7 +18,7 @@ def get_gold_data():
     # --- 1️⃣ Try Polygon API ---
     if POLYGON_API_KEY:
         try:
-            url = f'https://api.polygon.io/v2/aggs/ticker/XAUUSD/prev?apiKey={POLYGON_API_KEY}'
+            url = f'https://api.polygon.io/v2/aggs/ticker/C:XAUUSD/prev?apiKey={POLYGON_API_KEY}'
             response = requests.get(url, timeout=10)
             if response.status_code == 200:
                 data = response.json().get('results', [])
