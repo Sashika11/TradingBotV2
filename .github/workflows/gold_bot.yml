@@ -22,7 +22,7 @@ jobs:
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: |
-          curl -s "https://api.polygon.io/v2/aggs/ticker/XAUUSD/prev?apiKey=$POLYGON_API_KEY"
+          curl -s "https://api.massive.com/v2/aggs/ticker/C:XAUUSD/prev?adjusted=true&apiKey=$POLYGON_API_KEY"
 
       - name: Run Gold AI Trading Bot
         env:
