@@ -1,0 +1,1 @@
+def check_daily_loss(df): return True, 0

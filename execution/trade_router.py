@@ -1,0 +1,1 @@
+def route_trade(ctx, conf): print(ctx, conf)

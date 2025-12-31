@@ -1,0 +1,1 @@
+def calculate_confidence(c): return round(sum(c.values())/5,2)
