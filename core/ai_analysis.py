@@ -1,8 +1,16 @@
-def calculate_confidence(ctx):
-    score = 0
-    score += 0.3 if ctx.get('liquidity_sweep') else 0
-    score += 0.25 if ctx.get('bos') else 0
-    score += 0.2 if ctx.get('trend') else 0
-    score += 0.15 if ctx.get('session') else 0
-    score += 0.1 if ctx.get('volatility') else 0
-    return round(score,2)
+def calculate_confidence(smc_ctx):
+    """
+    Returns AI confidence score (0-1)
+    Example logic: trend + liquidity + FVG
+    """
+    score = 0.5
+    if smc_ctx.get('trend') == 'BULLISH':
+        score += 0.2
+    if smc_ctx.get('liquidity_sweep_low') or smc_ctx.get('bull_fvg'):
+        score += 0.2
+    if smc_ctx.get('trend') == 'BEARISH':
+        score -= 0.2
+    if smc_ctx.get('liquidity_sweep_high') or smc_ctx.get('bear_fvg'):
+        score -= 0.2
+    # Clamp between 0 and 1
+    return max(0, min(1, score))
