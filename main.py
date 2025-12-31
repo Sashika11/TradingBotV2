@@ -12,7 +12,6 @@ from core.groq_analysis import ask_groq
 from execution.trade_router import route_trade
 from alerts.telegram import send_alert
 
-# Path to trade journal
 TRADE_LOG_PATH = 'journal/trade_log.csv'
 
 def load_trade_log():
