@@ -6,10 +6,6 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 MODEL_ID = "llama-3.3-70b-versatile"
 
 def ask_groq(smc_ctx, news="No major news"):
-    """
-    Sends SMC context and optional news to Groq AI
-    Returns AI trade decision: Entry, SL, TP, signal, reasoning, confidence
-    """
     if not GROQ_API_KEY:
         print("⚠️ Groq API key not set")
         return None
@@ -17,34 +13,29 @@ def ask_groq(smc_ctx, news="No major news"):
     try:
         client = Groq(api_key=GROQ_API_KEY)
     except Exception as e:
-        print(f"❌ Groq initialization error: {e}")
+        print(f"❌ Groq init error: {e}")
         return None
 
     prompt = f"""
-    Act as a professional gold trader using SMC logic.
+    Act as professional gold trader using SMC logic.
+    DATA: {smc_ctx}
+    NEWS: {news}
 
-    DATA:
-    {smc_ctx}
-
-    NEWS:
-    {news}
-
-    STRICT ENTRY RULES:
-    1. BUY IF: Trend is BULLISH + Liquidity Sweep Low OR inside Bullish FVG
-    2. SELL IF: Trend is BEARISH + Liquidity Sweep High OR inside Bearish FVG
-    3. WAIT IF: No Sweep and No FVG test
+    Rules:
+    BUY if trend=BULLISH + sweep low or bull FVG
+    SELL if trend=BEARISH + sweep high or bear FVG
+    WAIT if no sweep/FVG
 
     Output JSON ONLY:
     {{
         "signal": "BUY/SELL/WAIT",
         "reasoning": "Technical reason",
-        "entry_price": {smc_ctx.get("Close",0)},
-        "stop_loss": {smc_ctx.get("Close",0)-10},
-        "take_profit": {smc_ctx.get("Close",0)+20},
-        "confidence": {smc_ctx.get("confidence",0)}
+        "entry_price": {smc_ctx.get('Close',0)},
+        "stop_loss": {smc_ctx.get('Close',0)-10},
+        "take_profit": {smc_ctx.get('Close',0)+20},
+        "confidence": {smc_ctx.get('confidence',0)}
     }}
     """
-
     try:
         completion = client.chat.completions.create(
             messages=[{"role":"user","content":prompt}],
